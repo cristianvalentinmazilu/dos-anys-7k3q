@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#2a1520">
+<title>24 razones · Para Lucía</title>
+<style>
+  :root {
+    --bg1: #2a1520;
+    --bg2: #5b2a3c;
+    --card: #fff7f1;
+    --ink: #3a1f2b;
+    --accent: #c2476a;
+    --soft: #e9c9d2;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--ink);
+    background: radial-gradient(120% 90% at 50% 0%, var(--bg2), var(--bg1));
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: pan-y;
+  }
+  .stage {
+    position: fixed; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: env(safe-area-inset-top) 20px env(safe-area-inset-bottom);
+  }
+  .progress {
+    position: absolute; top: calc(env(safe-area-inset-top) + 18px); left: 20px; right: 20px;
+    display: flex; gap: 3px;
+  }
+  .progress i {
+    flex: 1; height: 3px; border-radius: 3px; background: rgba(255,255,255,.18);
+    transition: background .4s;
+  }
+  .progress i.on { background: var(--soft); }
+  .card {
+    width: min(100%, 420px);
+    min-height: 52vh;
+    max-height: 70vh;
+    background: var(--card);
+    border-radius: 26px;
+    padding: 36px 28px 30px;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center;
+    box-shadow: 0 24px 60px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.25) inset;
+    position: relative;
+    animation: enter .5s cubic-bezier(.2,.8,.2,1);
+  }
+  .card.back { animation: enterBack .5s cubic-bezier(.2,.8,.2,1); }
+  @keyframes enter { from { opacity: 0; transform: translateY(26px) scale(.97); } to { opacity: 1; transform: none; } }
+  @keyframes enterBack { from { opacity: 0; transform: translateY(-26px) scale(.97); } to { opacity: 1; transform: none; } }
+  .num {
+    font-size: 78px; line-height: 1; color: var(--accent);
+    font-style: italic; letter-spacing: -2px; margin-bottom: 10px;
+  }
+  .num small { font-size: 18px; letter-spacing: 0; color: #a98592; font-style: normal; }
+  .rule { width: 46px; height: 2px; background: var(--soft); margin: 14px 0 22px; border-radius: 2px; }
+  .text { font-size: clamp(21px, 5.6vw, 26px); line-height: 1.42; }
+  .eyebrow { font-size: 13px; letter-spacing: .24em; text-transform: uppercase; color: #a98592; margin-bottom: 18px; }
+  .title { font-size: clamp(34px, 10vw, 46px); line-height: 1.1; font-style: italic; color: var(--accent); }
+  .sub { margin-top: 18px; font-size: 18px; line-height: 1.45; color: #6b4a57; }
+  .sign { margin-top: 26px; font-style: italic; color: var(--accent); font-size: 22px; }
+  .hint {
+    position: absolute; bottom: calc(env(safe-area-inset-bottom) + 22px);
+    color: rgba(255,255,255,.6); font-size: 14px; letter-spacing: .06em;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse { 50% { opacity: .35; } }
+  .zone { position: fixed; top: 0; bottom: 0; z-index: 5; }
+  .zone.l { left: 0; width: 30%; }
+  .zone.r { right: 0; width: 70%; }
+  .hearts { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 4; }
+  .heart { position: absolute; bottom: -30px; color: rgba(233,201,210,.55); animation: rise linear forwards; }
+  @keyframes rise { to { transform: translateY(-115vh) rotate(20deg); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .card, .card.back, .hint, .heart { animation: none; } }
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="progress" id="progress" aria-hidden="true"></div>
+  <div id="slot"></div>
+  <div class="hint" id="hint">toca para continuar</div>
+</div>
+<div class="zone l" id="prev"></div>
+<div class="zone r" id="next"></div>
+<div class="hearts" id="hearts" aria-hidden="true"></div>
+
+<script>
+/* ====== EDITA AQUÍ ======
+   Cada razón es una frase. El orden es el que verá ella. */
+const NOMBRE = "Lucía";
+const FIRMA = "Cristian";
+const RAZONES = [
+  "Por quererme a pesar de mis defectos.",
+  "Por invertir tu tiempo en mí, que es lo más valioso que se puede dar.",
+  "Por procurar siempre que estemos bien.",
+  "Por fijarte en cada detalle.",
+  "Por no dejarte llevar por las modas de hoy en día y saber exactamente lo que quieres.",
+  "Por saber de verdad lo que significa tener una relación. Contigo nunca tengo que dudar de lo que somos.",
+  "Por decirme que en invierno soy una estufa, y por buscar mi calor cuando tú estás helada.",
+  "Por ponerme un mote distinto según la época del año.",
+  "Por venir a verme arbitrar aunque luego no fuéramos a vernos.",
+  "Por seguir conmigo cuando yo trabajaba y casi no tenía tiempo para nada.",
+  "Por tus bizcochos. Y por los que últimamente se te olvida traer. Ya sabes.",
+  "Por hacer 45 minutos de bus para venir a verme, y otros 45 para volver.",
+  "Por escucharme cuando lo necesito.",
+  "Por tu paciencia conmigo.",
+  "Por celebrar lo que consigo como si también fuera tuyo.",
+  "Por hacer que un día normal se sienta especial.",
+  "Por hacerme sentir en casa a tu lado.",
+  "Por apoyarme en lo que estudio y en lo que quiero llegar a ser.",
+  "Porque contigo cualquier plan es un buen plan.",
+  "Por cómo me cuidas sin que yo tenga que pedirlo.",
+  "Por todo lo que hemos vivido en estos dos años.",
+  "Por lo que nos queda por vivir.",
+  "Por elegirme, incluso cuando no es lo más fácil.",
+  "Y porque, después de dos años, te volvería a elegir cada día."
+];
+/* ======================== */
+
+const slot = document.getElementById('slot');
+const progress = document.getElementById('progress');
+const hint = document.getElementById('hint');
+const total = RAZONES.length;
+// 0 = portada, 1..total = razones, total+1 = final
+let i = 0, lastDir = 1;
+
+for (let k = 0; k < total; k++) progress.appendChild(document.createElement('i'));
+const bars = progress.querySelectorAll('i');
+
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+function render() {
+  let html = '';
+  if (i === 0) {
+    html = `<div class="card ${lastDir < 0 ? 'back' : ''}">
+      <div class="eyebrow">Dos años · 21 de noviembre</div>
+      <div class="title">24 razones<br>por las que te quiero</div>
+      <div class="sub">Para ${esc(NOMBRE)}.<br>Una por cada mes.</div>
+    </div>`;
+  } else if (i <= total) {
+    html = `<div class="card ${lastDir < 0 ? 'back' : ''}">
+      <div class="num">${i}<small> / ${total}</small></div>
+      <div class="rule"></div>
+      <div class="text">${esc(RAZONES[i - 1])}</div>
+    </div>`;
+  } else {
+    html = `<div class="card ${lastDir < 0 ? 'back' : ''}">
+      <div class="eyebrow">Feliz aniversario</div>
+      <div class="title">${esc(NOMBRE)},<br>gracias por estos dos años</div>
+      <div class="sign">— ${esc(FIRMA)}</div>
+    </div>`;
+  }
+  slot.innerHTML = html;
+  bars.forEach((b, k) => b.classList.toggle('on', k < i));
+  hint.style.display = i === total + 1 ? 'none' : '';
+  hint.textContent = i === 0 ? 'toca para empezar' : 'toca para continuar';
+  if (i === total + 1) hearts(26);
+}
+
+function go(d) {
+  const n = i + d;
+  if (n < 0 || n > total + 1) return;
+  lastDir = d; i = n; render();
+  if (navigator.vibrate) { try { navigator.vibrate(8); } catch (e) {} }
+}
+
+function hearts(n) {
+  const box = document.getElementById('hearts');
+  for (let k = 0; k < n; k++) {
+    const h = document.createElement('div');
+    h.className = 'heart';
+    h.textContent = '♥';
+    h.style.left = Math.random() * 100 + '%';
+    h.style.fontSize = (14 + Math.random() * 26) + 'px';
+    h.style.animationDuration = (5 + Math.random() * 5) + 's';
+    h.style.animationDelay = (Math.random() * 2.5) + 's';
+    box.appendChild(h);
+    setTimeout(() => h.remove(), 11000);
+  }
+}
+
+document.getElementById('next').addEventListener('click', () => go(1));
+document.getElementById('prev').addEventListener('click', () => go(-1));
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') go(1);
+  if (e.key === 'ArrowLeft') go(-1);
+});
+let x0 = null;
+document.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+document.addEventListener('touchend', e => {
+  if (x0 === null) return;
+  const dx = e.changedTouches[0].clientX - x0; x0 = null;
+  if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+}, { passive: true });
+
+render();
+</script>
+</body>
+</html>
